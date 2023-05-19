@@ -29,6 +29,7 @@ async function run() {
 
         const toysCollection = client.db('toyDB').collection('toys');
 
+
         app.post('/addToys', async (req, res) => {
             const toys = req.body;
             const result = await toysCollection.insertOne(toys);
@@ -37,11 +38,22 @@ async function run() {
         })
 
 
-
         app.get('/allToys', async (req, res) => {
             const result = await toysCollection.find().toArray();
             res.send(result);
         })
+
+
+        // Show data by specific users in My Toys Page
+        app.get('/myToys/:email', async (req, res) => {
+            console.log(req.params.email);
+            const result = await toysCollection.find({ sellerEmail: req.params.email }).toArray();
+            res.send(result);
+        });
+
+
+
+
 
 
 
