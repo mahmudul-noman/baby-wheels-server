@@ -41,6 +41,14 @@ async function run() {
         })
 
 
+        app.get("/allToysByCategory/:category", async (req, res) => {
+            console.log(req.params.category);
+            const toys = await toysCollection.find({ toyCategory: req.params.category }).toArray();
+            res.send(toys);
+        });
+
+
+
         // Show data by specific users in My Toys Page
         app.get('/myToys/:email', async (req, res) => {
             console.log(req.params.email);
@@ -69,6 +77,7 @@ async function run() {
                     sellerEmail: updateToy.sellerEmail,
                     toyPrice: updateToy.toyPrice,
                     toyRating: updateToy.toyRating,
+                    toyCategory: updateToy.toyCategory,
                     quantity: updateToy.quantity,
                     toyDetails: updateToy.toyDetails
                 }
