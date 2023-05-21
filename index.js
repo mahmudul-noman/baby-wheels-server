@@ -27,7 +27,7 @@ async function run() {
 
         const toysCollection = client.db('toyDB').collection('toys');
 
-
+        
         app.post('/addToys', async (req, res) => {
             const toys = req.body;
             const result = await toysCollection.insertOne(toys);
@@ -49,13 +49,12 @@ async function run() {
         });
 
 
-
-        // Show data by specific users in My Toys Page
         app.get('/myToys/:email', async (req, res) => {
             console.log(req.params.email);
-            const result = await toysCollection.find({ sellerEmail: req.params.email }).toArray();
+            const result = await toysCollection.find({ sellerEmail: req.params.email }).sort({ toyPrice: 1 }).toArray();
             res.send(result);
         });
+
 
         app.get('/allToys/:id', async (req, res) => {
             const id = req.params.id;
@@ -68,7 +67,6 @@ async function run() {
         app.put('/allToys/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) }
-            // const options = { upsert: true }
             const updateToy = req.body;
             const toy = {
                 $set: {
